@@ -133,6 +133,37 @@ li:hover {
 	grid-row-gap: 20px;
 }
 
+.filter {
+	display: flex;
+	justify-content: center;
+	gap: 10px;
+	margin: 20px 0 50px 0;
+}
+
+.filter .inactif {
+	background-color: white;
+	color: #1D6154;
+	font-family: 'Syne';
+	font-weight: 700;
+	font-size: 16px;
+	padding: 9px 10px;
+	border-radius: 60px;
+	border: 1px solid #1D6154;
+	cursor: pointer;
+}
+
+.filter .actif {
+	background-color: #1D6154;
+	color: white;
+	font-family: 'Syne';
+	font-weight: 700;
+	font-size: 16px;
+	padding: 9px 10px;
+	border-radius: 60px;
+	border: 1px solid #1D6154;
+	cursor: pointer;
+}
+
 .gallery img {
 	width: 100%;
 
