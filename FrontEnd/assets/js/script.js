@@ -55,7 +55,9 @@ async function renderFilters() {
         });
     });
 }
-renderFilters();
+if (!localStorage.getItem('authToken')) {
+    renderFilters();
+}
 
 // Filtrage des projets
 async function filterWorks() {
@@ -86,7 +88,9 @@ async function filterWorks() {
         });
     });
 }
-filterWorks();
+if (!localStorage.getItem('authToken')) {
+    filterWorks();
+}
 
 // Vérification du token de connexion + mode édition + logout + bouton modifier
 document.addEventListener('DOMContentLoaded', function() {
@@ -109,6 +113,13 @@ document.addEventListener('DOMContentLoaded', function() {
         portfolioSection.removeChild(filterElement);
         const portfolioTitle = document.querySelector('#portfolio h2');
         portfolioTitle.style.marginBottom = '92px';
-        document.querySelector('.edit').style.display = 'block';
+        const portfolioHeader = document.querySelector('.portfolio-header');
+        const editDiv = document.createElement('div');
+        editDiv.classList.add('edit');
+        editDiv.innerHTML = `
+            <i class="fa-regular fa-pen-to-square"></i>
+            <p>modifier</p>
+        `;
+        portfolioHeader.appendChild(editDiv);
     }
 });
