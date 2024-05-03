@@ -2,7 +2,6 @@
    v2.0 | 20110126
    License: none (public domain)
 */
-
 html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
 a, abbr, acronym, address, big, cite, code,
@@ -47,6 +46,7 @@ table {
 	border-spacing: 0;
 }
 /** end reset css**/
+
 body {
 	max-width: 1140px;
 	margin:auto;
@@ -96,12 +96,10 @@ h2{
 	height: 20px;
     z-index: 1000;
 }
-
 .edition-banner i {
 	color: white;
     margin-right: 11.5px;
 }
-
 .edition-banner h2 {
 	font-family: 'Work Sans', sans-serif;
 	color: white;
@@ -159,32 +157,30 @@ li:hover {
 #introduction p {
 	margin-bottom: 0.5em;
 }
-#portfolio h2 {
-	text-align: center;
+
+.portfolio-header {
+    position: relative;
+}
+.portfolio-header h2 {
+    text-align: center;
 	margin-bottom: 1em;
 }
 .edit {
-	display: flex;
-	align-items: center;
-	gap: 10px;
-	width: 85px;
-	cursor: pointer;
+    display: none;
+    cursor: pointer;
+    position: absolute;
+	top: 10px;
+    right: 330px;
 }
-.edit i{
-	font-size: 16px;
+.edit i {
+    font-size: 16px;
+    margin-right: 10px;
 }
-.edit p{
-	font-family: 'Work Sans';
-	font-weight: 400;
-	font-size: 14px;
-}
-
-.gallery {
-	width: 100%;
-	display: grid;
-	grid-template-columns: 1fr 1fr 1fr;
-	grid-column-gap: 20px;
-	grid-row-gap: 20px;
+.edit p {
+    font-family: 'Work Sans';
+    display: inline;
+    font-weight: 400;
+    font-size: 14px;
 }
 
 .filter {
@@ -216,6 +212,13 @@ li:hover {
 	cursor: pointer;
 }
 
+.gallery {
+	width: 100%;
+	display: grid;
+	grid-template-columns: 1fr 1fr 1fr;
+	grid-column-gap: 20px;
+	grid-row-gap: 20px;
+}
 .gallery img {
 	width: 100%;
 }
@@ -304,6 +307,7 @@ input[type="submit"]{
 	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
 }
 #login p {
+	margin-top: 10px;
 	text-decoration: underline;
 }
 #login p:hover {

@@ -109,9 +109,6 @@ document.addEventListener('DOMContentLoaded', function() {
         portfolioSection.removeChild(filterElement);
         const portfolioTitle = document.querySelector('#portfolio h2');
         portfolioTitle.style.marginBottom = '92px';
-        const editDiv = document.createElement('div');
-        editDiv.innerHTML = '<i class="fa-regular fa-pen-to-square"></i><p>modifier</p>';
-        editDiv.classList.add('edit');
-        portfolioTitle.parentNode.insertBefore(editDiv, portfolioTitle.nextSibling);
+        document.querySelector('.edit').style.display = 'block';
     }
 });
