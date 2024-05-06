@@ -23,3 +23,25 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 });
+
+// Récupération des photos
+async function getWorks() {
+    const response = await fetch('http://localhost:5678/api/works');
+    return await response.json();
+}
+getWorks();
+
+// Affichage des photos
+async function renderWorks() {
+    const works = await getWorks();
+    const photo = document.querySelector('.photo');
+    works.forEach(work => {
+        const workElement = document.createElement('figure');
+        workElement.innerHTML = `
+            <img src="${work.imageUrl}" alt="${work.category.name+' - '+work.title}">
+            <i class="fa-solid fa-trash-can"></i>
+        `;
+        photo.appendChild(workElement);
+    });
+}
+renderWorks();
