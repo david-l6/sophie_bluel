@@ -389,6 +389,20 @@ footer nav ul {
 .photo img {
 	width: 100%;
 }
+.photo figure {
+	position: relative;
+}
+.photo .fa-trash-can {
+	position: absolute;
+	top: 6px;
+	right: 5px;
+	font-size: 10px;
+	color: white;
+	background-color: black;
+	border-radius: 2px;
+	padding: 4px;
+	cursor: pointer;
+}
 .modal_wrapper button {
 	all: unset;
 	font-family: 'Syne';

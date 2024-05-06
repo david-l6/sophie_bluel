@@ -3,6 +3,9 @@ document.addEventListener("DOMContentLoaded", () => {
     const editButton = document.querySelector(".edit");
     const modal = document.querySelector(".modal");
     const closeButton = modal.querySelector(".fa-xmark");
+    if (!editButton) {
+        return;
+    }
     editButton.addEventListener("click", () => {
         modal.style.display = "block";
     });
@@ -31,7 +34,7 @@ async function getWorks() {
 }
 getWorks();
 
-// Affichage des photos
+// Affichage des photos avec l'icone poubelle
 async function renderWorks() {
     const works = await getWorks();
     const photo = document.querySelector('.photo');
@@ -45,3 +48,5 @@ async function renderWorks() {
     });
 }
 renderWorks();
+
+//Suppression d'une photo avec l'icone poubelle http://localhost:5678/api/works/{id}

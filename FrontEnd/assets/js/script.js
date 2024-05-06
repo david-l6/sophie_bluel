@@ -65,7 +65,8 @@ async function filterWorks() {
     const button = document.querySelectorAll('.filter button');
     button.forEach(button => {
         button.addEventListener('click', (e) => {
-            buttonId = e.target.id;
+            const buttonId = e.target.id;
+            console.log(buttonId);
             gallery.innerHTML = '';
             projects.forEach(project => {
                 if (project.category.id == buttonId) {
@@ -92,7 +93,7 @@ if (!localStorage.getItem('authToken')) {
     filterWorks();
 }
 
-// Vérification du token de connexion + mode édition + logout + bouton modifier
+// Vérification du token de connexion + affichage bannière, logout et bouton modifier
 document.addEventListener('DOMContentLoaded', function() {
     if (localStorage.getItem('authToken')) {
         const header = document.querySelector('header');
