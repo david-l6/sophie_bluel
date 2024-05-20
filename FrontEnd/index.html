@@ -72,7 +72,7 @@
 								<i class="fa-regular fa-image"></i>						
 								<label for="photo">+ Ajouter photo</label>
 								<p>jpg, png : 4mo max</p>
-								<input type="file" name="photo" id="photo" accept="image/*">
+								<input type="file" name="photo" id="photo" accept=".jpg, .jpeg, .png">
 							</div>
 							<div class="photo_choisie">
 							</div>
@@ -80,10 +80,10 @@
 							<input type="text" name="titre" id="titre">
 							<label for="categorie">Catégorie</label>
 							<select name="categorie" id="categorie">
-								<option value=" "></option>
+								<option value="0"></option>
 							</select>
 						</form>
-						<button type="submit">Valider</button>
+						<button type="submit" id="valider">Valider</button>
 					</div>
 				</div>
 			</div>
