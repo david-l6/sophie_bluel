@@ -56,22 +56,37 @@
 					</div>
 					<div class="photo">
 					</div>
-					<button>Ajouter une photo</button>
+					<button id="ajout_photo">Ajouter une photo</button>
 				</div>
 			</div>
-			<!-- <div id="modal2">
+			<div id="modal2">
 				<div class="modal_wrapper">
 					<div class="modal_header">
 						<i class="fa-solid fa-arrow-left"></i>
 						<h3>Ajout photo</h3>
 						<i class="fa-solid fa-xmark"></i>
 					</div>
-					<div class="">
-						<i class="fa-regular fa-image"></i>
+					<div class="ajout">
+						<form action="">
+							<div class="ajout_photo">	
+								<i class="fa-regular fa-image"></i>						
+								<label for="photo">+ Ajouter photo</label>
+								<p>jpg, png : 4mo max</p>
+								<input type="file" name="photo" id="photo" accept="image/*">
+							</div>
+							<div class="photo_choisie">
+							</div>
+							<label for="titre">Titre</label>
+							<input type="text" name="titre" id="titre">
+							<label for="categorie">Catégorie</label>
+							<select name="categorie" id="categorie">
+								<option value=" "></option>
+							</select>
+						</form>
+						<button type="submit">Valider</button>
 					</div>
-					<button>Valider</button>
 				</div>
-			</div> -->
+			</div>
 		</aside>
 	</section>
 	<section id="contact">
