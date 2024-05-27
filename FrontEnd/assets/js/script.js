@@ -1,10 +1,10 @@
-const gallery = document.querySelector('.gallery');
-const filterElement = document.querySelector('.filter');
-const header = document.querySelector('header');
-const loginMenuItem = document.querySelector('nav ul li a[href="login.html"]');
-const portfolioSection = document.getElementById('portfolio');
-const portfolioTitle = document.querySelector('#portfolio h2');
-const portfolioHeader = document.querySelector('.portfolio-header');
+const gallery           = document.querySelector('.gallery');
+const filterElement     = document.querySelector('.filter');
+const header            = document.querySelector('header');
+const loginMenuItem     = document.querySelector('nav ul li a[href="login.html"]');
+const portfolioSection  = document.getElementById('portfolio');
+const portfolioTitle    = document.querySelector('#portfolio h2');
+const portfolioHeader   = document.querySelector('.portfolio-header');
 
 // Récupération des projets
 async function getWorks() {
