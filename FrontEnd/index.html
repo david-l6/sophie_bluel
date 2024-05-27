@@ -68,20 +68,23 @@
 					</div>
 					<div class="ajout">
 						<form action="">
-							<div class="ajout_photo">	
+							<div class="ajout_photo flex">	
 								<i class="fa-regular fa-image"></i>						
 								<label for="photo">+ Ajouter photo</label>
 								<p>jpg, png : 4mo max</p>
 								<input type="file" name="photo" id="photo" accept=".jpg, .jpeg, .png">
 							</div>
-							<div class="photo_choisie">
+							<div class="photo_choisie none">
 							</div>
 							<label for="titre">Titre</label>
 							<input type="text" name="titre" id="titre">
 							<label for="categorie">Catégorie</label>
-							<select name="categorie" id="categorie">
-								<option value="0"></option>
-							</select>
+							<div class="custom-select">
+								<select name="categorie" id="categorie">
+									<option value="0"></option>
+								</select>
+								<i class="fa-solid fa-chevron-down"></i>
+							</div>
 						</form>
 						<button type="submit" id="valider">Valider</button>
 					</div>

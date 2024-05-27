@@ -1,20 +1,37 @@
+const gallery = document.querySelector('.gallery');
+const filterElement = document.querySelector('.filter');
+const header = document.querySelector('header');
+const loginMenuItem = document.querySelector('nav ul li a[href="login.html"]');
+const portfolioSection = document.getElementById('portfolio');
+const portfolioTitle = document.querySelector('#portfolio h2');
+const portfolioHeader = document.querySelector('.portfolio-header');
+
 // Récupération des projets
 async function getWorks() {
-    const response = await fetch('http://localhost:5678/api/works');
-    return await response.json();
+    try {
+        const response = await fetch('http://localhost:5678/api/works');
+        // Vérification que la réponse est correcte
+        if (!response.ok) {
+            throw new Error(`Erreur HTTP ! statut : ${response.status}`);
+        }
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error('Erreur lors de la récupération des projets :', error);
+        throw error;  // Relance l'erreur pour la gestion en amont
+    }
 }
 getWorks();
 
 // Affichage des projets
-const gallery = document.querySelector('.gallery');
 async function renderWorks() {
     const works = await getWorks();
+    gallery.innerHTML = '';
     works.forEach(work => {
         const workElement = document.createElement('figure');
         workElement.innerHTML = `
             <img src="${work.imageUrl}" alt="${work.category.name+' - '+work.title}">
-            <figcaption>${work.title}</figcaption>
-        `;
+            <figcaption>${work.title}</figcaption>`;
         gallery.appendChild(workElement);
     });
 }
@@ -22,15 +39,24 @@ renderWorks();
 
 // Récupération des catégories
 async function getFilters() {
-    const response = await fetch('http://localhost:5678/api/categories');
-    return await response.json();
+    try {
+        const response = await fetch('http://localhost:5678/api/categories');
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json(); // Pas besoin d'utiliser await ici, return suffit
+    } catch (error) {
+        console.error('Erreur lors de la récupération des catégories:', error);
+        return null; // Ou une valeur par défaut appropriée
+    }
 }
-getFilters();
+if (!localStorage.getItem('authToken')) {
+    getFilters();
+}
 
 // Affichage des boutons filtres
 async function renderFilters() {
     const filters = await getFilters();
-    const filterElement = document.querySelector('.filter');
     const allButton = document.createElement('button');
     allButton.textContent = 'Tous';
     allButton.id = '0';
@@ -66,7 +92,6 @@ async function filterWorks() {
     button.forEach(button => {
         button.addEventListener('click', (e) => {
             const buttonId = e.target.id;
-            console.log(buttonId);
             gallery.innerHTML = '';
             projects.forEach(project => {
                 if (project.category.id == buttonId) {
@@ -96,25 +121,19 @@ if (!localStorage.getItem('authToken')) {
 // Vérification du token de connexion + affichage bannière, logout et bouton modifier
 document.addEventListener('DOMContentLoaded', function() {
     if (localStorage.getItem('authToken')) {
-        const header = document.querySelector('header');
-        header.style.paddingTop = '60px';
-        document.querySelector('.edition-banner').style.display = 'block';
-        const loginMenuItem = document.querySelector('nav ul li a[href="login.html"]');
+        header.classList.add('header_padding');
+        document.querySelector('.edition-banner').classList.add('block');
         if (loginMenuItem) {
             loginMenuItem.textContent = 'logout';
             loginMenuItem.href = '#';
             loginMenuItem.addEventListener('click', function(event) {
                 event.preventDefault();
                 localStorage.removeItem('authToken');
-                window.location.href = 'login.html';
+                window.location.href = 'index.html';
             });
         }
-        const portfolioSection = document.getElementById('portfolio');
-        const filterElement = portfolioSection.querySelector('.filter');
         portfolioSection.removeChild(filterElement);
-        const portfolioTitle = document.querySelector('#portfolio h2');
-        portfolioTitle.style.marginBottom = '92px';
-        const portfolioHeader = document.querySelector('.portfolio-header');
+        portfolioTitle.classList.add('marginBottom_h2');
         const editDiv = document.createElement('div');
         editDiv.classList.add('edit');
         editDiv.innerHTML = `

@@ -1,54 +1,74 @@
+const photo             = document.querySelector('.photo');
+const btn               = document.querySelector('#ajout_photo');
+const modal1            = document.querySelector('#modal1');
+const modal2            = document.querySelector('#modal2');
+const arrow             = document.querySelector('.fa-arrow-left');
+const select            = document.querySelector('select');
+const photoChoisi       = document.querySelector('.photo_choisie');
+const ajoutPhoto        = document.querySelector('.ajout_photo');
+const input             = document.querySelector('input[type="file"]');
+const form              = document.querySelector('form');
+const btnValider        = document.querySelector('#valider');
+const photoAjoute       = document.querySelector('#photo');
+const titre             = document.querySelector('#titre');
+const categorie         = document.querySelector('#categorie');
+
 // Ouverture et fermeture de la modale
 document.addEventListener("DOMContentLoaded", () => {
-    const editButton = document.querySelector(".edit");
-    const modal = document.querySelector(".modal");
-    const closeButtons = document.querySelectorAll(".fa-xmark");
-    const modal1 = document.querySelector('#modal1');
-    const modal2 = document.querySelector('#modal2');
-    
+    const editButton    = document.querySelector(".edit");
+    const modal         = document.querySelector(".modal");
+    const closeButtons  = document.querySelectorAll(".fa-xmark");
+    const modal1        = document.querySelector('#modal1');
+    const modal2        = document.querySelector('#modal2');
     if (!editButton) {
         return;
     }
-    
     editButton.addEventListener("click", () => {
-        modal.style.display = "block";
-        modal1.style.display = "block";
-        modal2.style.display = "none";
+        modal.classList.add("block");
+        modal1.classList.remove("none");
+        modal1.classList.add("block");
+        modal2.classList.remove("block");
+        modal2.classList.add("none");
     });
-
     closeButtons.forEach(closeButton => {
         closeButton.addEventListener("click", () => {
-            modal.style.animation = "fadeOut 0.4s both";
+            modal.classList.add("modal_animation");
             setTimeout(() => {
-                modal.style.display = "none";
-                modal.style.animation = ""; 
+                modal.classList.remove("block");
+                modal.classList.remove("modal_animation");
             }, 400);
         });
     });
-    
     window.addEventListener("click", (event) => {
         if (event.target == modal) {
-            modal.style.animation = "fadeOut 0.4s both";
+            modal.classList.add("modal_animation");
             setTimeout(() => {
-                modal.style.display = "none";
-                modal.style.animation = ""; 
+                modal.classList.remove("block");
+                modal.classList.remove("modal_animation");
             }, 400);
         }
     });
 });
 
-
 // Récupération des photos
-async function getWorks() {
-    const response = await fetch('http://localhost:5678/api/works');
-    return await response.json();
+async function getModalWorks() {
+    try {
+        const response = await fetch('http://localhost:5678/api/works');
+        // Vérification de la réponse pour les erreurs HTTP
+        if (!response.ok) {
+            throw new Error(`Erreur HTTP ! statut : ${response.status}`);
+        }
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error('Une erreur s\'est produite lors de la récupération des travaux :', error);
+    }
 }
-getWorks();
 
 // Affichage des photos avec l'icone poubelle
-async function renderWorks() {
-    const works = await getWorks();
-    const photo = document.querySelector('.photo');
+async function renderModalWorks() {
+    const works = await getModalWorks();
+    photo.innerHTML = "";
     works.forEach(work => {
         photo.innerHTML += `
         <figure data-id ="${work.id}">
@@ -57,54 +77,74 @@ async function renderWorks() {
         </figure>`;
     });
 }
-renderWorks();
+renderModalWorks();
 
-//Suppression d'une photo avec l'icone poubelle
-const photo = document.querySelector('.photo');
-photo.addEventListener('click', async (event) => {
+// Suppression d'une photo avec l'icone poubelle
+document.querySelector('.photo').addEventListener('click', async (event) => {
+    // Vérifie si l'élément cliqué contient la classe 'fa-trash-can'
     if (event.target.classList.contains('fa-trash-can')) {
-        const figure = event.target.closest('figure');
-        const id = figure.dataset.id;
-        const response = await fetch(`http://localhost:5678/api/works/${id}`, {
-            method: 'DELETE',
-            headers: {
-                'Authorization': `Bearer ${localStorage.getItem('authToken')}`
+        // Récupère l'élément figure le plus proche et son ID
+        const figureElement = event.target.closest('figure');
+        const workId = figureElement.dataset.id;
+
+        try {
+            // Envoie une requête DELETE à l'API pour supprimer l'élément
+            const response = await fetch(`http://localhost:5678/api/works/${workId}`, {
+                method: 'DELETE',
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('authToken')}`
+                }
+            });
+
+            // Vérifie si la suppression a été réussie
+            if (response.ok) {
+                // Supprime l'élément figure du DOM
+                figureElement.remove();
+                
+                // Rafraîchit les travaux dans la modal et sur la page
+                await getModalWorks();
+                await getWorks();
+                renderWorks();
+            } else {
+                // Gère les erreurs de la réponse
+                console.error(`Erreur lors de la suppression: ${response.statusText}`);
             }
-        });
-        if (response.status === 200 || 204) {
-            figure.remove();
-            getWorks();
+        } catch (error) {
+            // Gère les erreurs de réseau ou autres exceptions
+            console.error('Erreur lors de la requête de suppression:', error);
         }
     }
 });
-// Trouver comment empecher que la page s'actualise après la suppression d'une photo
 
-// Ajout d'une photo via un formulaire
-// Fait un Event listener sur le bouton "Ajouter une photo" et revenir en arrière
-const btn = document.querySelector('#ajout_photo');
-const modal1 = document.querySelector('#modal1');
-const modal2 = document.querySelector('#modal2');
-const arrow = document.querySelector('.fa-arrow-left');
+// Navigation entre les modales
 btn.addEventListener('click', () => {
-    modal1.style.display = 'none';
-    modal2.style.display = 'block';
+    modal1.classList.remove('block');
+    modal1.classList.add('none');
+    modal2.classList.remove('none');
+    modal2.classList.add('block');
 });
 arrow.addEventListener('click', () => {
-    modal1.style.display = 'block';
-    modal2.style.display = 'none';
-    photoChoisi.style.display = 'none';
-    ajoutPhoto.style.display = 'flex';
+    modal1.classList.remove('none');
+    modal1.classList.add('block');
+    modal2.classList.remove('block');
+    modal2.classList.add('none');
 });
 
 // Chargement des catégorie dans le formulaire
 async function getCategories() {
-    const response = await fetch('http://localhost:5678/api/categories');
-    return await response.json();
+    try {
+        const response = await fetch('http://localhost:5678/api/categories');
+        if (!response.ok) {
+            throw new Error('Erreur lors de la récupération des catégories');
+        }
+        return await response.json();
+    } catch (error) {
+        console.error('Erreur:', error);
+        return []; // Retourne un tableau vide en cas d'erreur
+    }
 }
-getCategories();
 
 // Affichage des catégories dans le formulaire
-const select = document.querySelector('select');
 async function renderCategories() {
     const categories = await getCategories();
     categories.forEach(category => {
@@ -117,26 +157,20 @@ async function renderCategories() {
 renderCategories();
 
 // Affichage de la photo selectionné depuis mon ordinateur dans la div .photo_choisi
-const input = document.querySelector('input[type="file"]');
-const photoChoisi = document.querySelector('.photo_choisie');
-const ajoutPhoto = document.querySelector('.ajout_photo');
 input.addEventListener('change', () => {
     const file = input.files[0];
     const reader = new FileReader();
     reader.onload = () => {
-        photoChoisi.style.display = 'block';
+        photoChoisi.classList.remove('none');
+        photoChoisi.classList.add('block');
         photoChoisi.innerHTML = `<img src="${reader.result}" alt="photo">`;
-        ajoutPhoto.style.display = 'none';
+        ajoutPhoto.classList.remove('flex');
+        ajoutPhoto.classList.add('none');
     };
     reader.readAsDataURL(file);
 });
 
 // Si tout les champs du formulaire sont remplis, alors activé le bouton "Valider"
-const form = document.querySelector('form');
-const btnValider = document.querySelector('#valider');
-const titre = document.querySelector('#titre');
-const categorie = document.querySelector('#categorie');
-const photoAjoute = document.querySelector('#photo');
 btnValider.disabled = true;
 form.addEventListener('input', () => {
     if (titre.value !== "" && categorie.value > 0 && photoAjoute.value !== "") {
@@ -151,24 +185,42 @@ form.addEventListener('input', () => {
 // Envoie du formulaire pour ajouter une photo lors du click sur le bouton "Valider"
 btnValider.addEventListener('click', async (event) => {
     event.preventDefault();
-    let data = new FormData();
-    data.append('image', input.files[0]);
-    data.append('title', titre.value);
-    data.append('category', categorie.value);
-    
-    fetch('http://localhost:5678/api/works', {
-        method: 'POST',
-        headers: {
-            'Authorization': `Bearer ${localStorage.getItem('authToken')}`
-        },
-        body: data
-    })
-    .then(response => response.json())
-    .then(data => console.log(data))
-    .catch((error) => {
-        console.error('Error:', error);
-    });
-});
+    try {
+        // Préparation des données du formulaire
+        let data = new FormData();
+        data.append('image', input.files[0]);
+        data.append('title', titre.value);
+        data.append('category', categorie.value);
+        
+        // Envoie de la requête POST
+        const response = await fetch('http://localhost:5678/api/works', {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem('authToken')}`
+            },
+            body: data
+        });
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const result = await response.json();
+        // alert('Projet ajouté avec succès !');
 
-// Mettre un message dans la console une fois que le projet a bien été envoyé
-// Réinitialisé la modal2 pour permettre d'envoyer un nouveau projet.
+        // Réinitialisation du formulaire et des éléments d'interface
+        titre.value = "";
+        categorie.value = 0;
+        input.value = "";
+        photoChoisi.classList.remove('block');
+        photoChoisi.classList.add('none');
+        ajoutPhoto.classList.remove('none');
+        ajoutPhoto.classList.add('flex');
+        btnValider.disabled = true;
+        btnValider.classList.remove('bouton_actif');
+
+        // Mise à jour de l'interface utilisateur
+        await Promise.all([getWorks(), renderWorks(), getModalWorks(), renderModalWorks()]);
+
+    } catch (error) {
+        console.error('Error:', error);
+    }
+});
