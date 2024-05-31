@@ -40,10 +40,7 @@ renderWorks();
 // Récupération des catégories
 async function getFilters() {
     try {
-        const response = await fetch('http://localhost:5678/api/categories', {
-            method: 'GET',
-            credentials: 'omit'
-        });
+        const response = await fetch('http://localhost:5678/api/categories');
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
