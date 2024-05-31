@@ -77,7 +77,9 @@ async function renderModalWorks() {
         </figure>`;
     });
 }
-renderModalWorks();
+if (localStorage.getItem('authToken')) {
+    renderModalWorks();
+}
 
 // Suppression d'une photo avec l'icone poubelle
 document.querySelector('.photo').addEventListener('click', async (event) => {
@@ -100,6 +102,7 @@ document.querySelector('.photo').addEventListener('click', async (event) => {
             if (response.ok) {
                 // Supprime l'élément figure du DOM
                 figureElement.remove();
+                // alert('Projet supprimé avec succès !');
                 
                 // Rafraîchit les travaux dans la modal et sur la page
                 await getModalWorks();
@@ -154,7 +157,9 @@ async function renderCategories() {
         select.appendChild(option);
     });
 }
-renderCategories();
+if (localStorage.getItem('authToken')) {
+    renderCategories();
+}
 
 // Affichage de la photo selectionné depuis mon ordinateur dans la div .photo_choisi
 input.addEventListener('change', () => {
@@ -218,7 +223,7 @@ btnValider.addEventListener('click', async (event) => {
         btnValider.classList.remove('bouton_actif');
 
         // Mise à jour de l'interface utilisateur
-        await Promise.all([getWorks(), renderWorks(), getModalWorks(), renderModalWorks()]);
+        await Promise.all([renderWorks(), renderModalWorks()]);
 
     } catch (error) {
         console.error('Error:', error);
