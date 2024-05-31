@@ -44,10 +44,9 @@ async function getFilters() {
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
-        return response.json(); // Pas besoin d'utiliser await ici, return suffit
+        return response.json();
     } catch (error) {
         console.error('Erreur lors de la récupération des catégories:', error);
-        return null; // Ou une valeur par défaut appropriée
     }
 }
 if (!localStorage.getItem('authToken')) {
